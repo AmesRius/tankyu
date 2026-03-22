@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>伝わるスライド構成 | 探究学習支援サイト</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/layout.css">
+    <style>
+        /* スライド構成リスト用の独自スタイル */
+        .p-slide-flow {
+            margin: 32px 0;
+            counter-reset: slide-counter;
+        }
+        .p-slide-flow__item {
+            position: relative;
+            background: #fff;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            padding: 20px 20px 20px 60px;
+            margin-bottom: 16px;
+        }
+        .p-slide-flow__item::before {
+            counter-increment: slide-counter;
+            content: counter(slide-counter);
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            background-color: #607D8B; /* くすみブルー */
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .p-slide-flow__title {
+            display: block;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+            color: #37474F;
+        }
+        .p-slide-flow__desc {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="l-header">
+        <div class="l-container l-header__inner">
+            <div class="l-header__logo">
+                <a href="../../">探究学習支援サイト</a>
+            </div>
+            <nav class="l-header__nav">
+                <ul class="l-header__list">
+                    <li><a href="../../about/" class="l-header__link">このサイトについて</a></li>
+                    <li><a href="../../support/" class="l-header__link">悩み別支援</a></li>
+                    <li><a href="../../guides/" class="l-header__link">学習ガイド</a></li>
+                    <li><a href="../../tools/" class="l-header__link">便利ツール</a></li>
+                    <li><a href="../../downloads/" class="l-header__link">配布素材</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="l-breadcrumb">
+        <div class="l-container">
+            <ol class="l-breadcrumb__list">
+                <li><a href="../../">ホーム</a></li>
+                <li><a href="../../support/">悩み別支援</a></li>
+                <li><a href="../../support/presentation/">発表</a></li>
+                <li>伝わるスライド構成</li>
+            </ol>
+        </div>
+    </nav>
+
+    <main>
+        <article class="l-section">
+            <div class="l-container l-container--narrow">
+                
+                <header class="p-article-header u-mb-48">
+                    <h1 class="u-mb-24">伝わるスライド構成</h1>
+                    <p class="p-article-header__intro">
+                        発表の良し悪しは、デザインのセンスよりも「情報の順番」で決まります。<br>
+                        聞き手が迷子にならず、最後までワクワクしながら聞ける「基本の8枚」テンプレートを紹介します。
+                    </p>
+                </header>
+
+                <div class="p-article-body">
+                    <h2>探究発表の「基本の8枚」</h2>
+                    <p>まずはこの構成で骨組みを作ってみましょう。情報の過不足がなくなり、論理的な発表になります。</p>
+
+                    <div class="p-slide-flow">
+                        <div class="p-slide-flow__item">
+                            <span class="p-slide-flow__title">タイトル</span>
+                            <p class="p-slide-flow__desc">何を調べたのか、一目で内容がわかる名前にしましょう。</p>
+                        </div>
+                        <div class="p-slide-flow__item">
+                            <span class="p-slide-flow__title">きっかけ（背景）</span>
+                            <p class="p-slide-flow__desc">なぜこのテーマを選んだのか？君の個人的な「熱い思い」を伝えて共感を得ます。</p>
+                        </div>
+                        <div class="p-slide-flow__item">
+                            <span class="p-slide-flow__title">問い・仮説</span>
+                            <p class="p-slide-flow__desc">結局、何を明らかにしたいのか。自分なりの「予想」をはっきり示します。</p>
+                        </div>
+                        <div class="p-slide-flow__item">
+                            <span class="p-slide-flow__title">調査・実験方法</span>
+                            <p class="p-slide-flow__desc">アンケート、インタビュー、実験など、どんな手順でデータを集めたか詳しく書きます。</p>
+                        </div>
+                        <div class="p-slide-flow__item">
+                            <span class="p-slide-flow__title">結果</span>
+                            <p class="p-slide-flow__desc">グラフや表を使って「事実」を示します。自分の意見はここではまだ我慢。</p>
+                        </div>
+                        <div class="p-slide-flow__item">
+                            <span class="p-slide-flow__title">考察</span>
+                            <p class="p-slide-flow__desc">結果から何が言えるか。仮説と同じだったか、違ったか。その理由は何かを考えます。</p>
+                        </div>
+                        <div class="p-slide-flow__item">
+                            <span class="p-slide-flow__title">結論・今後の課題</span>
+                            <p class="p-slide-flow__desc">最終的な答えと、今回の探究で解決できなかった「次の宿題」を伝えます。</p>
+                        </div>
+                        <div class="p-slide-flow__item">
+                            <span class="p-slide-flow__title">参考文献</span>
+                            <p class="p-slide-flow__desc">情報の信頼性を証明するため、参考にした本やサイトを正しく載せます。</p>
+                        </div>
+                    </div>
+
+                    <hr class="u-mt-48 u-mb-48">
+
+                    <h2>デザインの鉄則：1スライド・1メッセージ</h2>
+                    <p>1枚のスライドに情報を詰め込みすぎないのが、聞き手への一番の「おもてなし」です。</p>
+                    
+                    <div class="c-card u-bg-light u-mb-24">
+                        <h3 class="u-mt-0">💡 意識するポイント</h3>
+                        <ul class="u-mb-0">
+                            <li><strong>文字は大きく：</strong> 24pt以上を推奨。後ろの席の人も読めるように。</li>
+                            <li><strong>箇条書きにする：</strong> 文章で書かず、単語や短いフレーズでまとめます。</li>
+                            <li><strong>3色ルール：</strong> ベース（白）、メイン（黒・紺）、アクセント（目立たせたい1色）に絞ります。</li>
+                        </ul>
+                    </div>
+
+                    <div class="u-mt-64">
+                        <h3>「君らしさ」が最高のデザイン</h3>
+                        <p>
+                            完璧で綺麗なスライドよりも、君が実際に現場へ行って、悩んで、発見したプロセスが見えるスライドの方が、聞き手の心に深く刺さります。自信を持って、君の発見を伝えてくださいね。
+                        </p>
+                    </div>
+                </div>
+
+                <footer class="p-article-footer u-mt-64 u-text-center">
+                    <a href="../../support/presentation/" class="c-btn c-btn--outline">
+                        「発表」の悩み一覧に戻る
+                    </a>
+                </footer>
+
+            </div>
+        </article>
+    </main>
+
+    <footer class="l-footer">
+        <div class="l-container">
+            <div class="l-footer__inner">
+                <div class="l-footer__content">
+                    <p class="l-footer__logo">探究学習支援サイト</p>
+                    <p class="text-sub">中高生の「知りたい」「解決したい」をサポートします。</p>
+                </div>
+                <div class="l-footer__copyright">
+                    <small>&copy; 2026 探究学習支援サイト</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

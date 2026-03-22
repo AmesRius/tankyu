@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSHテーマ分析 | 探究学習支援サイト</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/layout.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        body { background: #F4F6F8; }
+        .p-analytics-hero {
+            background: linear-gradient(135deg, #6c8b9a 0%, #546E7A 60%, #607D8B 100%);
+            color: #fff;
+            padding: 52px 0 44px;
+            text-align: center;
+        }
+        .p-analytics-hero__eyebrow { font-size: .78rem; letter-spacing: .14em; opacity: .7; margin-bottom: 8px; }
+        .p-analytics-hero__title { font-size: 1.9rem; font-weight: bold; margin-bottom: 8px; }
+        .p-analytics-hero__sub { font-size: .9rem; opacity: .8; line-height: 1.7; }
+        /* .p-kpi-bar {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 16px; max-width: 1000px; margin: -28px auto 0;
+            padding: 0 20px; position: relative; z-index: 10;
+        }
+        .p-kpi-card { background: #fff; border-radius: 10px; padding: 20px 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); text-align: center; }
+        .p-kpi-card__num { font-size: 2rem; font-weight: bold; color: #37474F; line-height: 1.1; }
+        .p-kpi-card__label { font-size: .78rem; color: #90A4AE; margin-top: 4px; } */
+        .p-data-stat {
+            display: flex;
+            gap: 24px;
+            margin: 32px 0;
+            flex-wrap: wrap;
+        }
+        .p-data-stat__item {
+            background: #fff;
+            border: 1px solid #E0E0E0;
+            border-radius: 10px;
+            padding: 20px 24px;
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+        }
+        .p-data-stat__num {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #37474F;
+            line-height: 1.1;
+        }
+        .p-data-stat__label {
+            font-size: 0.78rem;
+            color: #90A4AE;
+            margin-top: 4px;
+        }
+        .p-analytics-main { max-width: 1000px; margin: 40px auto 60px; padding: 0 20px; display: grid; gap: 24px; }
+        .p-filter-bar {
+            background: #fff; border: 1px solid #E0E0E0; border-radius: 10px;
+            padding: 16px 20px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+        }
+        .p-filter-bar__label { font-size: .8rem; font-weight: bold; color: #78909C; white-space: nowrap; }
+        .p-filter-bar select {
+            padding: 7px 32px 7px 12px; border: 1px solid #CFD8DC; border-radius: 6px;
+            font-size: .88rem; background: #FAFAFA; appearance: none; -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2390A4AE'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 10px center; cursor: pointer; min-width: 140px;
+        }
+        .p-filter-bar select:focus { outline: none; border-color: #6B8EAD; }
+        .p-chart-card { background: #fff; border: 1px solid #E0E0E0; border-radius: 10px; padding: 24px 24px 20px; }
+        .p-chart-card__header { margin-bottom: 18px; }
+        .p-chart-card__title { font-size: 1rem; font-weight: bold; color: #263238; margin: 0 0 4px; }
+        .p-chart-card__desc { font-size: .82rem; color: #90A4AE; margin: 0; }
+        .p-chart-wrap { position: relative; }
+        .p-charts-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .p-rank-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+        .p-rank-table th { font-size: .75rem; font-weight: bold; color: #90A4AE; text-align: left; padding: 0 0 10px; border-bottom: 1px solid #ECEFF1; }
+        .p-rank-table td { padding: 10px 0 9px; border-bottom: 1px solid #F5F5F5; vertical-align: middle; }
+        .p-rank-table tr:last-child td { border-bottom: none; }
+        .p-rank-num { font-size: .78rem; font-weight: bold; color: #B0BEC5; width: 28px; }
+        .p-rank-bar-wrap { width: 140px; padding-right: 12px; }
+        .p-rank-bar-bg { background: #ECEFF1; border-radius: 3px; height: 6px; overflow: hidden; }
+        .p-rank-bar-fill { background: linear-gradient(90deg, #6B8EAD, #45b8c8); height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+        .p-rank-count { font-size: .82rem; font-weight: bold; color: #546E7A; white-space: nowrap; }
+        .p-insight-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .p-insight-card { background: #fff; border: 1px solid #E0E0E0; border-radius: 10px; padding: 20px; }
+        .p-insight-card__icon { font-size: 1.4rem; margin-bottom: 8px; }
+        .p-insight-card__heading { font-size: .78rem; font-weight: bold; color: #90A4AE; letter-spacing: .08em; margin-bottom: 6px; }
+        .p-insight-card__body { font-size: .9rem; color: #37474F; line-height: 1.6; }
+        .p-insight-card__body strong { color: #263238; }
+        .p-tabs { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 1px solid #ECEFF1; }
+        .p-tab-btn { padding: 8px 16px; font-size: .85rem; font-weight: bold; color: #90A4AE; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; transition: all .15s; margin-bottom: -1px; }
+        .p-tab-btn:hover { color: #546E7A; }
+        .p-tab-btn.is-active { color: #37474F; border-bottom-color: #6B8EAD; }
+        @media (max-width: 680px) {
+            .p-kpi-bar { grid-template-columns: repeat(2, 1fr); margin-top: -20px; }
+            .p-charts-2col { grid-template-columns: 1fr; }
+            .p-insight-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="l-header">
+        <div class="l-container l-header__inner">
+            <div class="l-header__logo"><a href="../../">探究学習支援サイト</a></div>
+            <nav class="l-header__nav">
+                <ul class="l-header__list">
+                    <li class="l-header__item"><a href="../../support/" class="l-header__link">悩み別支援</a></li>
+                    <li class="l-header__item"><a href="../../guides/" class="l-header__link">学習ガイド</a></li>
+                    <li class="l-header__item"><a href="../../resources/" class="l-header__link">便利ツール</a></li>
+                    <li class="l-header__item"><a href="../../downloads/" class="l-header__link">配布素材</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="p-analytics-hero">
+        <div class="l-container">
+            <p class="p-analytics-hero__eyebrow">SSH（スーパーサイエンスハイスクール）公開報告書より</p>
+            <h1 class="p-analytics-hero__title">テーマ傾向 分析ダッシュボード</h1>
+            <p class="p-analytics-hero__sub">収録データを可視化して、探究テーマの「流れ」と「傾向」を読み解きます。</p>
+        </div>
+    </div>
+
+    <!-- <div class="p-kpi-bar">
+        <div class="p-kpi-card"><div class="p-kpi-card__num">5,732</div><div class="p-kpi-card__label">収録テーマ数</div></div>
+        <div class="p-kpi-card"><div class="p-kpi-card__num">6</div><div class="p-kpi-card__label">収録校数</div></div>
+        <div class="p-kpi-card"><div class="p-kpi-card__num">7</div><div class="p-kpi-card__label">収録年度（2018〜2024）</div></div>
+        <div class="p-kpi-card"><div class="p-kpi-card__num">92</div><div class="p-kpi-card__label">ユニーク分野数</div></div>
+    </div> -->
+                        <div class="p-data-stat">
+                        <div class="p-data-stat__item">
+                            <div class="p-data-stat__num" id="stat-total">—</div>
+                            <div class="p-data-stat__label">収録テーマ数</div>
+                        </div>
+                        <div class="p-data-stat__item">
+                            <div class="p-data-stat__num" id="stat-schools">—</div>
+                            <div class="p-data-stat__label">収録校数</div>
+                        </div>
+                        <div class="p-data-stat__item">
+                            <div class="p-data-stat__num" id="stat-years">—</div>
+                            <div class="p-data-stat__label">収録年度<br><span id="stat-year-range" style="font-size:.75rem;font-weight:normal">—</span></div>
+                        </div>
+                        <div class="p-data-stat__item">
+                            <div class="p-data-stat__num" id="stat-genres">—</div>
+                            <div class="p-data-stat__label">分野の種類数</div>
+                        </div>
+                    </div>
+
+    <div class="p-analytics-main">
+        <div class="p-filter-bar">
+            <span class="p-filter-bar__label">グラフの絞り込み</span>
+            <select id="g-school">
+                <option value="all">全校（合計）</option>
+                <option value="お茶の水女子大学附属高等学校">お茶の水女子大附属</option>
+                <option value="東京都立多摩科学技術高等学校">都立多摩科学技術</option>
+                <option value="東京都立小石川中等教育学校">都立小石川中等教育</option>
+                <option value="東京都立戸山高等学校">都立戸山</option>
+                <option value="東京都立科学技術高等学校">都立科学技術</option>
+                <option value="東京都立立川高等学校">都立立川</option>
+            </select>
+            <select id="g-year">
+                <option value="all">全年度</option>
+                <option value="2018">2018年度</option>
+                <option value="2019">2019年度</option>
+                <option value="2020">2020年度</option>
+                <option value="2021">2021年度</option>
+                <option value="2022">2022年度</option>
+                <option value="2023">2023年度</option>
+                <option value="2024">2024年度</option>
+            </select>
+        </div>
+
+        <div class="p-insight-grid">
+            <div class="p-insight-card"><div class="p-insight-card__icon">📈</div><div class="p-insight-card__heading">最多分野カテゴリ</div><div class="p-insight-card__body" id="ins-top-genre">—</div></div>
+            <div class="p-insight-card"><div class="p-insight-card__icon">🚀</div><div class="p-insight-card__heading">最も増加した分野（2018→2024）</div><div class="p-insight-card__body" id="ins-growth">—</div></div>
+            <div class="p-insight-card"><div class="p-insight-card__icon">🏫</div><div class="p-insight-card__heading">最多テーマ数の学校</div><div class="p-insight-card__body" id="ins-top-school">—</div></div>
+        </div>
+
+        <div class="p-chart-card">
+            <div class="p-chart-card__header">
+                <h2 class="p-chart-card__title">年度別 テーマ数の推移</h2>
+                <p class="p-chart-card__desc">各年度に報告書で公開されたテーマ数の変化</p>
+            </div>
+            <div class="p-chart-wrap" style="height:260px"><canvas id="chart-yearly"></canvas></div>
+        </div>
+
+        <div class="p-charts-2col">
+            <div class="p-chart-card">
+                <div class="p-chart-card__header">
+                    <h2 class="p-chart-card__title">大カテゴリ別 テーマ数</h2>
+                    <p class="p-chart-card__desc">92分野を11カテゴリに集約</p>
+                </div>
+                <div class="p-chart-wrap" style="height:300px"><canvas id="chart-genre-bar"></canvas></div>
+            </div>
+            <div class="p-chart-card">
+                <div class="p-chart-card__header">
+                    <h2 class="p-chart-card__title">学校別 テーマ数の内訳</h2>
+                    <p class="p-chart-card__desc">選択条件での学校別シェア</p>
+                </div>
+                <div class="p-chart-wrap" style="height:300px"><canvas id="chart-school-donut"></canvas></div>
+            </div>
+        </div>
+
+        <div class="p-chart-card">
+            <div class="p-chart-card__header">
+                <h2 class="p-chart-card__title">分野カテゴリ別 年度推移（積み上げ）</h2>
+                <p class="p-chart-card__desc">どの分野が何年から増えているかを確認できます</p>
+            </div>
+            <div class="p-tabs" id="stack-tabs">
+                <button class="p-tab-btn is-active" data-tab="stacked">積み上げ</button>
+                <button class="p-tab-btn" data-tab="percent">100%比較</button>
+            </div>
+            <div class="p-chart-wrap" style="height:300px"><canvas id="chart-stacked"></canvas></div>
+        </div>
+
+        <div class="p-chart-card">
+            <div class="p-chart-card__header">
+                <h2 class="p-chart-card__title">分野ランキング（オリジナル分類）</h2>
+                <p class="p-chart-card__desc">データベース内の92分野を件数順で表示</p>
+            </div>
+            <div id="rank-table-wrap"></div>
+        </div>
+    </div>
+
+    <footer class="l-footer">
+        <div class="l-container l-footer__inner">
+            <div class="l-footer__content">
+                <p class="l-footer__logo">探究学習支援サイト</p>
+                <p class="text-sub">中高生の「知りたい」「解決したい」をサポートします。</p>
+            </div>
+            <div class="l-footer__copyright"><small>&copy; 2026 探究学習支援サイト</small></div>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/theme-data.js"></script>
+    <script>
+    const YEARS   = ['2018','2019','2020','2021','2022','2023','2024'];
+    const SCHOOLS = ['お茶の水女子大学附属高等学校','東京都立多摩科学技術高等学校','東京都立小石川中等教育学校','東京都立戸山高等学校','東京都立科学技術高等学校','東京都立立川高等学校'];
+    const SCHOOL_SHORT = {'お茶の水女子大学附属高等学校':'お茶大附属','東京都立多摩科学技術高等学校':'多摩科学技術','東京都立小石川中等教育学校':'小石川','東京都立戸山高等学校':'戸山','東京都立科学技術高等学校':'科学技術','東京都立立川高等学校':'立川'};
+    const GENRE_MAP = {'物理':'物理','物理学分野':'物理','物理学系':'物理','物理系':'物理','化学':'化学','化学分野':'化学','化学系':'化学','化学・バイオ系':'化学','化学・環境':'化学','化学・薬・環境系':'化学','暮らしの化学':'化学','NT領域':'化学','生物':'生物','生物学系':'生物','生物系':'生物','生物・生態学分野':'生物','生物・生態学系':'生物','BT領域':'生物','地学':'地学・環境','地学分野':'地学・環境','地学系':'地学・環境','地学・地理学':'地学・環境','地学（地理学）':'地学・環境','地学・環境・人権系':'地学・環境','地学・数学':'地学・環境','環境分野':'地学・環境','環境系':'地学・環境','地球環境科学':'地学・環境','生命科学':'地学・環境','ET領域':'地学・環境','IT領域':'情報・IT','電子・情報工学系':'情報・IT','情報':'情報・IT','情報系':'情報・IT','情報学系':'情報・IT','情報・ものつくりと課題解決':'情報・IT','機械・制御工学系':'情報・IT','数学':'数学','数学科':'数学','数学系':'数学','数学・メディア系':'数学','数学・情報系':'数学','数学・情報・メディア分野':'数学','数学・情報・メディア系':'数学','数学・情報工学・統計学系':'数学','数理・情報科学':'数学','数理・情報系':'数学','数字':'数学','教育・心理と純粋数学':'数学','社会科':'社会・人文','社会科学':'社会・人文','社会学系':'社会・人文','政治・経済・法律系':'社会・人文','政治経済学分野':'社会・人文','政治・経済・経営 × 統計':'社会・人文','政治・経済・経営×統計':'社会・人文','歴史と文化':'社会・人文','歴史学分野':'社会・人文','歴史学系':'社会・人文','人文学系':'社会・人文','地理・観光・産業・物流分野':'社会・人文','心理・コミュニケーション分野':'心理・教育','心理・コミュニケーション系':'心理・教育','教育・心理':'心理・教育','教育学分野':'心理・教育','文学':'言語・芸術','文学・言語と文化':'言語・芸術','文学・言語学系':'言語・芸術','言語・文学分野':'言語・芸術','国語科':'言語・芸術','英語科':'言語・芸術','芸術学分野':'言語・芸術','芸術系':'言語・芸術','芸術文化と科学（文学）':'言語・芸術','芸術文化と科学（色と形の科学）':'言語・芸術','芸術文化と科学（音楽学）':'言語・芸術','色と形の科学':'言語・芸術','音楽学':'言語・芸術','音楽科':'言語・芸術','美術科':'言語・芸術','スポーツ分野':'スポーツ・健康','保健体育科':'スポーツ・健康','健康・医療分野':'スポーツ・健康','身体・運動・スポーツ・栄養学系':'スポーツ・健康','身体・運動・スポーツ系':'スポーツ・健康','運動・スポーツ・身体 × データサイエンス':'スポーツ・健康','食物・栄養学分野':'スポーツ・健康'};
+    const CATS = ['情報・IT','化学','社会・人文','生物','数学','地学・環境','物理','言語・芸術','スポーツ・健康','心理・教育','その他'];
+    const CAT_COLORS = ['#5C85A4','#E8834A','#7B6EA8','#5DA06B','#D4A017','#4A9D9C','#C0575A','#A07850','#7090A0','#C06080','#90A0A0'];
+
+    function getFiltered() {
+        const school = document.getElementById('g-school').value;
+        const year   = document.getElementById('g-year').value;
+        return THEME_DATABASE.filter(function(d) {
+            return (school === 'all' || d.school === school) &&
+                   (year   === 'all' || d.year   === year);
+        });
+    }
+    function getCat(genre) { return GENRE_MAP[genre] || 'その他'; }
+
+    Chart.defaults.font.family = '"Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif';
+    Chart.defaults.font.size = 12;
+    Chart.defaults.color = '#78909C';
+
+    var charts = {};
+    function destroyChart(id) { if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
+
+    function drawYearly(data) {
+        destroyChart('yearly');
+        var school = document.getElementById('g-school').value;
+        var label  = school === 'all' ? '全校合計' : (SCHOOL_SHORT[school] || school);
+        var counts = YEARS.map(function(y) { return data.filter(function(d){ return d.year === y; }).length; });
+        var ctx = document.getElementById('chart-yearly').getContext('2d');
+        charts['yearly'] = new Chart(ctx, {
+            type: 'line',
+            data: { labels: YEARS, datasets: [{ label: label, data: counts, borderColor: '#6B8EAD', backgroundColor: 'rgba(107,142,173,0.08)', borderWidth: 2.5, pointRadius: 5, pointBackgroundColor: '#6B8EAD', fill: true, tension: 0.3 }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } } }
+        });
+    }
+
+    function drawGenreBar(data) {
+        destroyChart('genre-bar');
+        var catCount = {};
+        CATS.forEach(function(c){ catCount[c] = 0; });
+        data.forEach(function(d){ var c = getCat(d.genre); catCount[c] = (catCount[c]||0)+1; });
+        var sorted = CATS.slice().sort(function(a,b){ return catCount[b]-catCount[a]; });
+        var ctx = document.getElementById('chart-genre-bar').getContext('2d');
+        charts['genre-bar'] = new Chart(ctx, {
+            type: 'bar',
+            data: { labels: sorted, datasets: [{ data: sorted.map(function(c){ return catCount[c]; }), backgroundColor: sorted.map(function(c){ return CAT_COLORS[CATS.indexOf(c)] + 'CC'; }), borderColor: sorted.map(function(c){ return CAT_COLORS[CATS.indexOf(c)]; }), borderWidth: 1, borderRadius: 4 }] },
+            options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } }, y: { grid: { display: false }, ticks: { font: { size: 11 } } } } }
+        });
+    }
+
+    function drawSchoolDonut(data) {
+        destroyChart('school-donut');
+        var schoolColors = ['#5C85A4','#E8834A','#7B6EA8','#5DA06B','#D4A017','#4A9D9C'];
+        var counts = SCHOOLS.map(function(s){ return data.filter(function(d){ return d.school === s; }).length; });
+        var ctx = document.getElementById('chart-school-donut').getContext('2d');
+        charts['school-donut'] = new Chart(ctx, {
+            type: 'doughnut',
+            data: { labels: SCHOOLS.map(function(s){ return SCHOOL_SHORT[s]; }), datasets: [{ data: counts, backgroundColor: schoolColors, borderWidth: 2, borderColor: '#fff' }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 10, boxWidth: 12 } } }, cutout: '62%' }
+        });
+    }
+
+    var stackMode = 'stacked';
+    function drawStacked(data) {
+        destroyChart('stacked');
+        var isPercent = stackMode === 'percent';
+        var totals = YEARS.map(function(y){ return data.filter(function(d){ return d.year===y; }).length || 1; });
+        var datasets = CATS.map(function(c, i){
+            var raw = YEARS.map(function(y){ return data.filter(function(d){ return d.year===y && getCat(d.genre)===c; }).length; });
+            return { label: c, data: isPercent ? raw.map(function(v,i){ return Math.round(v/totals[i]*1000)/10; }) : raw, backgroundColor: CAT_COLORS[i] + 'CC', borderColor: CAT_COLORS[i], borderWidth: 0.5 };
+        });
+        var ctx = document.getElementById('chart-stacked').getContext('2d');
+        charts['stacked'] = new Chart(ctx, {
+            type: 'bar',
+            data: { labels: YEARS, datasets: datasets },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 10 }, padding: 8, boxWidth: 10 } } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: isPercent ? 100 : undefined, ticks: { callback: isPercent ? function(v){ return v+'%'; } : undefined }, grid: { color: 'rgba(0,0,0,0.05)' } } } }
+        });
+    }
+
+    function drawRankTable(data) {
+        var genreCount = {};
+        data.forEach(function(d){ var g=d.genre||'不明'; genreCount[g]=(genreCount[g]||0)+1; });
+        var sorted = Object.keys(genreCount).sort(function(a,b){ return genreCount[b]-genreCount[a]; });
+        var max = genreCount[sorted[0]] || 1;
+        var wrap = document.getElementById('rank-table-wrap');
+        var html = '<table class="p-rank-table"><thead><tr><th>順位</th><th>分野名</th><th>大カテゴリ</th><th class="p-rank-bar-wrap"></th><th>件数</th></tr></thead><tbody>';
+        sorted.slice(0, 30).forEach(function(g, i){
+            var cnt = genreCount[g], pct = Math.round(cnt/max*100);
+            var cat = getCat(g), catIdx = CATS.indexOf(cat);
+            var color = CAT_COLORS[catIdx >= 0 ? catIdx : CAT_COLORS.length-1];
+            html += '<tr><td class="p-rank-num">'+(i+1)+'</td><td style="font-size:.88rem;color:#37474F">'+g+'</td><td><span style="font-size:.75rem;font-weight:bold;color:'+color+';background:'+color+'18;padding:2px 8px;border-radius:10px;white-space:nowrap">'+cat+'</span></td><td class="p-rank-bar-wrap"><div class="p-rank-bar-bg"><div class="p-rank-bar-fill" style="width:'+pct+'%;background:'+color+'"></div></div></td><td class="p-rank-count">'+cnt+'</td></tr>';
+        });
+        html += '</tbody></table>';
+        if (sorted.length > 30) html += '<p style="font-size:.8rem;color:#90A4AE;margin-top:12px;text-align:center">上位30件を表示（全'+sorted.length+'分野）</p>';
+        wrap.innerHTML = html;
+    }
+
+    function updateInsights(data) {
+        var catCount = {};
+        data.forEach(function(d){ var c=getCat(d.genre); catCount[c]=(catCount[c]||0)+1; });
+        var topCat = Object.keys(catCount).sort(function(a,b){ return catCount[b]-catCount[a]; })[0];
+        document.getElementById('ins-top-genre').innerHTML = '<strong>'+topCat+'</strong> が最多（'+(catCount[topCat]||0)+'件）';
+        var growthData = CATS.map(function(c){
+            var y18=data.filter(function(d){ return d.year==='2018'&&getCat(d.genre)===c; }).length;
+            var y24=data.filter(function(d){ return d.year==='2024'&&getCat(d.genre)===c; }).length;
+            return {cat:c,growth:y24-y18,y18:y18,y24:y24};
+        }).filter(function(x){ return x.y18>0&&x.y24>0; }).sort(function(a,b){ return b.growth-a.growth; });
+        if (growthData.length > 0) {
+            var g = growthData[0];
+            document.getElementById('ins-growth').innerHTML = '<strong>'+g.cat+'</strong>（'+g.y18+'件→'+g.y24+'件、+'+g.growth+'件）';
+        }
+        var schoolCount = {};
+        data.forEach(function(d){ var s=d.school||'不明'; schoolCount[s]=(schoolCount[s]||0)+1; });
+        var topSchool = Object.keys(schoolCount).sort(function(a,b){ return schoolCount[b]-schoolCount[a]; })[0];
+        if (topSchool) document.getElementById('ins-top-school').innerHTML = '<strong>'+(SCHOOL_SHORT[topSchool]||topSchool)+'</strong>（'+schoolCount[topSchool]+'件）';
+    }
+
+    function updateAll() {
+        var data = getFiltered();
+        drawYearly(data); drawGenreBar(data); drawSchoolDonut(data); drawStacked(data); drawRankTable(data); updateInsights(data);
+    }
+
+    document.getElementById('stack-tabs').addEventListener('click', function(e) {
+        var btn = e.target.closest('.p-tab-btn');
+        if (!btn) return;
+        document.querySelectorAll('#stack-tabs .p-tab-btn').forEach(function(b){ b.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+        stackMode = btn.dataset.tab;
+        drawStacked(getFiltered());
+    });
+    document.getElementById('g-school').addEventListener('change', updateAll);
+    document.getElementById('g-year').addEventListener('change', updateAll);
+    updateAll();
+    (function() {
+            var total   = THEME_DATABASE.length;
+            var schools = new Set(THEME_DATABASE.map(function(d){ return d.school; }).filter(Boolean));
+            var years   = THEME_DATABASE.map(function(d){ return d.year; }).filter(Boolean);
+            var genres  = new Set(THEME_DATABASE.map(function(d){ return d.genre; }).filter(Boolean));
+            var minYear = years.reduce(function(a,b){ return a<b?a:b; });
+            var maxYear = years.reduce(function(a,b){ return a>b?a:b; });
+            var uniqueYears = new Set(years);
+
+            document.getElementById('stat-total').textContent   = total.toLocaleString();
+            document.getElementById('stat-schools').textContent = schools.size;
+            document.getElementById('stat-years').textContent   = uniqueYears.size;
+            document.getElementById('stat-year-range').textContent = minYear + '〜' + maxYear + '年度';
+            document.getElementById('stat-genres').textContent  = genres.size;
+        })();
+    </script>
+</body>
+</html>

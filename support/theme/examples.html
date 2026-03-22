@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>探究テーマの例 | 探究学習支援サイト</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/layout.css">
+    <style>
+        /* 検索・フィルターエリアの個別スタイル */
+        .p-filter-area {
+            background-color: #F8F9FA;
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+        .p-filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .p-filter-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .p-filter-item label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #546E7A;
+        }
+        .p-filter-select, .p-filter-input {
+            padding: 8px;
+            border: 1px solid #E0E0E0;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            background-color: #fff;
+        }
+        /* ランダム操作エリア */
+        .p-random-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 16px;
+            border-top: 1px solid #E0E0E0;
+        }
+        .p-random-input {
+            width: 60px;
+            padding: 6px;
+            border: 1px solid #E0E0E0;
+            border-radius: 4px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="l-header">
+        <div class="l-container l-header__inner">
+            <div class="l-header__logo">
+                <a href="../../">探究学習支援サイト</a>
+            </div>
+            <nav class="l-header__nav">
+                <ul class="l-header__list">
+                    <li><a href="../../about/" class="l-header__link">このサイトについて</a></li>
+                    <li><a href="../../support/" class="l-header__link">悩み別支援</a></li>
+                    <li><a href="../../guides/" class="l-header__link">学習ガイド</a></li>
+                    <li><a href="../../tools/" class="l-header__link">便利ツール</a></li>
+                    <li><a href="../../downloads/" class="l-header__link">配布素材</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="l-breadcrumb">
+        <div class="l-container">
+            <ol class="l-breadcrumb__list">
+                <li><a href="../../">ホーム</a></li>
+                <li><a href="../../support/">悩み別支援</a></li>
+                <li><a href="../../support/theme/">テーマ決め</a></li>
+                <li>探究テーマの例</li>
+            </ol>
+        </div>
+    </nav>
+
+    <main>
+        <article class="l-section">
+            <div class="l-container">
+                <header class="u-text-center u-mb-48">
+                    <h1 class="u-mb-24">探究テーマの例</h1>
+                    <p>先輩たちの多様な探究テーマを参考にしてみましょう。<br>
+                    細かい条件で絞り込んだり、ランダムに表示させてヒントを探せます。</p>
+                </header>
+
+                <section class="p-filter-area">
+                    <div class="p-filter-grid">
+                        <div class="p-filter-item">
+                            <label for="f-keyword">キーワード（テーマ名）</label>
+                            <input type="text" id="f-keyword" class="p-filter-input" placeholder="例：睡眠">
+                        </div>
+                
+                        <div class="p-filter-item">
+                            <label for="f-genre">分野</label>
+                            <select id="f-genre" class="p-filter-select">
+                                <option value="">すべて</option>
+                            </select>
+                        </div>
+                
+                        <div class="p-filter-item">
+                            <label for="f-grade">学年</label>
+                            <select id="f-grade" class="p-filter-select">
+                                <option value="">すべて</option>
+                            </select>
+                        </div>
+                
+                        <div class="p-filter-item">
+                            <label for="f-year">年度</label>
+                            <select id="f-year" class="p-filter-select">
+                                <option value="">すべて</option>
+                            </select>
+                        </div>
+                
+                        <div class="p-filter-item">
+                            <label for="f-course">授業名</label>
+                            <select id="f-course" class="p-filter-select">
+                                <option value="">すべて</option>
+                            </select>
+                        </div>
+                
+                        <div class="p-filter-item">
+                            <label for="f-school">学校名</label>
+                            <input type="text" id="f-school" class="p-filter-input" placeholder="学校名を入力">
+                        </div>
+                    </div>
+
+                    <div class="p-random-controls">
+                        <label for="r-count">ランダムに</label>
+                        <input type="number" id="r-count" class="p-random-input" value="3" min="1" max="10">
+                        <span>件表示する</span>
+                        <button type="button" id="random-btn" class="c-btn c-btn--primary c-btn--sm" style="margin-left: auto;">シャッフル表示</button>
+                    </div>
+                </section>
+
+                <div class="p-search-stats u-mb-16">
+                    <p id="theme-count" style="font-size: 0.9rem; color: #666; font-weight: bold;">
+                    </p>
+                </div>
+                
+                <div id="theme-list" class="l-grid l-grid--2col"></div>
+
+                <div id="theme-list" class="l-grid l-grid--2col"></div>
+                <div id="no-result" class="u-text-center" style="display: none; padding: 40px 0;">
+                    <p>該当するテーマが見つかりませんでした。条件を変えてみてください。</p>
+                </div>
+
+                <div style="margin-top:56px;padding:28px 24px;background:#F4F6F8;border-radius:12px;border:1px solid #E0E0E0">
+                    <p style="text-align:center;font-weight:bold;color:#546E7A;margin-bottom:6px">📊 このデータをもっと深く分析する</p>
+                    <p style="text-align:center;font-size:.88rem;color:#90A4AE;margin-bottom:20px">収録テーマ 5,732件の傾向をグラフで可視化できます。</p>
+                    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+                        <a href="/support/theme/analytics.html" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:#fff;border:1px solid #B0C8E0;border-radius:8px;font-size:.9rem;font-weight:bold;color:#37474F;text-decoration:none;transition:all .2s" onmouseover="this.style.background='#EBF3FA';this.style.borderColor='#6B8EAD'" onmouseout="this.style.background='#fff';this.style.borderColor='#B0C8E0'">
+                            <span style="font-size:1.1rem">📈</span>
+                            <span>分析ダッシュボード<span style="display:block;font-size:.75rem;font-weight:normal;color:#90A4AE">年度・分野・学校の傾向を確認</span></span>
+                        </a>
+                        <a href="/support/theme/custom-analysis.html" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:#fff;border:1px solid #B0C8E0;border-radius:8px;font-size:.9rem;font-weight:bold;color:#37474F;text-decoration:none;transition:all .2s" onmouseover="this.style.background='#EBF3FA';this.style.borderColor='#6B8EAD'" onmouseout="this.style.background='#fff';this.style.borderColor='#B0C8E0'">
+                            <span style="font-size:1.1rem">🔬</span>
+                            <span>オリジナル分析<span style="display:block;font-size:.75rem;font-weight:normal;color:#90A4AE">軸・グラフタイプを自由に組み合わせ</span></span>
+                        </a>
+                    </div>
+                </div>
+
+                <footer class="u-mt-64 u-text-center">
+                    <a href="../../support/theme/" class="c-btn c-btn--outline">テーマ決めの悩み一覧に戻る</a>
+                </footer>
+            </div>
+        </article>
+    </main>
+
+
+    <footer class="l-footer">
+        <div class="l-container u-text-center">
+            <small>&copy; 2026 探究学習支援サイト</small>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/theme-data.js"></script>
+    <script src="../../assets/js/theme-search.js"></script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アンケート作成のコツ | 探究学習支援サイト</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/layout.css">
+    <style>
+        /* チェックリスト用の個別スタイル */
+        .p-checklist {
+            list-style: none;
+            padding: 0;
+            background-color: #fff;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+        }
+        .p-checklist__item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            border-bottom: 1px solid #F0F0F0;
+        }
+        .p-checklist__item:last-child { border-bottom: none; }
+        
+        .p-checklist__item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 4px;
+            cursor: pointer;
+        }
+        
+        .p-checklist__label {
+            cursor: pointer;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="l-header">
+        <div class="l-container l-header__inner">
+            <div class="l-header__logo">
+                <a href="../../">探究学習支援サイト</a>
+            </div>
+            <nav class="l-header__nav">
+                <ul class="l-header__list">
+                    <li><a href="../../about/" class="l-header__link">このサイトについて</a></li>
+                    <li><a href="../../support/" class="l-header__link">悩み別支援</a></li>
+                    <li><a href="../../guides/" class="l-header__link">学習ガイド</a></li>
+                    <li><a href="../../tools/" class="l-header__link">便利ツール</a></li>
+                    <li><a href="../../downloads/" class="l-header__link">配布素材</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="l-breadcrumb">
+        <div class="l-container">
+            <ol class="l-breadcrumb__list">
+                <li><a href="../../">ホーム</a></li>
+                <li><a href="../../support/">悩み別支援</a></li>
+                <li><a href="../../support/investigation/">調査・実験</a></li>
+                <li>アンケート作成のコツ</li>
+            </ol>
+        </div>
+    </nav>
+
+    <main>
+        <article class="l-section">
+            <div class="l-container l-container--narrow">
+                
+                <header class="p-article-header u-mb-48">
+                    <h1 class="u-mb-24">アンケート作成のコツ</h1>
+                    <p class="p-article-header__intro">
+                        「たくさんの人に意見を聞いてみたい！」と思ったら、アンケートの出番です。<br>
+                        回答してくれる人の負担を減らし、かつ自分の探究に役立つデータを集めるための「準備のステップ」を学んでいきましょう。
+                    </p>
+                </header>
+
+                <div class="p-article-body">
+                    <h2>ステップ1：「だれに・何のために」を決める</h2>
+                    <p>
+                        いきなり質問を作り始めるのはNGです。まずは「この調査で何がわかれば、自分の問いの答えになるのか」をはっきりさせましょう。
+                    </p>
+                    <ul>
+                        <li><strong>対象：</strong> 全校生徒？ それとも1年生だけ？</li>
+                        <li><strong>目的：</strong> スマホの利用時間を知りたい？ それとも「使いすぎ」と感じているかという“気持ち”を知りたい？</li>
+                    </ul>
+
+                    <h2>ステップ2：質問の「形」を使い分ける</h2>
+                    <p>集計のしやすさを考えて、2つの形を組み合わせましょう。</p>
+                    <div class="l-grid l-grid--2col u-mt-24 u-mb-24">
+                        <div class="c-card">
+                            <span class="c-card__title">選択式（クローズド）</span>
+                            <p class="c-card__desc">「はい/いいえ」や「5段階評価」で答える形式。グラフにしやすく、全体の傾向をつかむのに最適です。</p>
+                        </div>
+                        <div class="c-card">
+                            <span class="c-card__title">記述式（オープン）</span>
+                            <p class="c-card__desc">自由に文章を書いてもらう形式。予想外の意見や、深い理由を知るのに役立ちます。</p>
+                        </div>
+                    </div>
+
+                    <h2>ステップ3：やってはいけない「誘導」</h2>
+                    <p>自分の予想（仮説）に合わせようとして、相手の答えを誘導してはいけません。</p>
+                    <div class="c-card u-bg-light u-mb-24">
+                        <p class="u-mb-8"><strong>❌ ダメな例：</strong></p>
+                        <p class="u-mb-16">「この便利なアプリを、あなたも使いたいと思いますか？」<br>
+                        <span class="text-sub">（「便利」という言葉が、相手に「はい」と言わせるプレッシャーになります）</span></p>
+                        <p class="u-mb-8"><strong>⭕ 良い例：</strong></p>
+                        <p>「このアプリの利用について、どのように感じますか？」<br>
+                        <span class="text-sub">（中立的な言葉を使うことで、相手の本当の気持ちを引き出せます）</span></p>
+                    </div>
+
+                    <hr class="u-mt-64 u-mb-64">
+
+                    <h2>アンケート完成前のチェックリスト</h2>
+                    <p>配布する前に、一度自分で答えてみて以下の項目を確認しましょう。</p>
+                    
+                    <ul class="p-checklist">
+                        <li class="p-checklist__item">
+                            <input type="checkbox" id="c1">
+                            <label for="c1" class="p-checklist__label">
+                                <strong>目的とプライバシーの説明があるか</strong><br>
+                                <span class="text-sub">（何に使うのか、個人が特定されないか、冒頭に書いてありますか？）</span>
+                            </label>
+                        </li>
+                        <li class="p-checklist__item">
+                            <input type="checkbox" id="c2">
+                            <label for="c2" class="p-checklist__label">
+                                <strong>質問の数は多すぎないか</strong><br>
+                                <span class="text-sub">（5〜10分程度で終わる量になっていますか？）</span>
+                            </label>
+                        </li>
+                        <li class="p-checklist__item">
+                            <input type="checkbox" id="c3">
+                            <label for="c3" class="p-checklist__label">
+                                <strong>専門用語を使っていないか</strong><br>
+                                <span class="text-sub">（誰が読んでも、同じ意味に受け取れる言葉ですか？）</span>
+                            </label>
+                        </li>
+                        <li class="p-checklist__item">
+                            <input type="checkbox" id="c4">
+                            <label for="c4" class="p-checklist__label">
+                                <strong>選択肢に漏れや重なりはないか</strong><br>
+                                <span class="text-sub">（「1〜2時間」と「2〜3時間」のように、2つ選べてしまう箇所はありませんか？）</span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+
+                <footer class="p-article-footer u-mt-64 u-text-center">
+                    <a href="../../support/investigation/" class="c-btn c-btn--outline">
+                        「調査・実験」の一覧に戻る
+                    </a>
+                </footer>
+
+            </div>
+        </article>
+    </main>
+
+    <footer class="l-footer">
+        <div class="l-container u-text-center">
+            <small>&copy; 2026 探究学習支援サイト</small>
+        </div>
+    </footer>
+
+</body>
+</html>

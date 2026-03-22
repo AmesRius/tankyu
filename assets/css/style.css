@@ -1,0 +1,173 @@
+@charset "UTF-8";
+
+/* ==========================================================================
+   1. リセットCSS (Minimal Reset)
+   ========================================================================== */
+*, *::before, *::after {
+    box-sizing: border-box; /* サイズ計算をパディング含みに固定 */
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px; /* 基本サイズ */
+    -webkit-text-size-adjust: 100%; /* iOSのフォントサイズ自動調整防止 */
+}
+
+body {
+    background-color: #FFFFFF;
+    color: #333333; /* メインテキスト */
+    line-height: 1.8; /* 読みやすさを重視した行間 */
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    -webkit-font-smoothing: antialiased; /* フォントを滑らかに表示 */
+    overflow-wrap: break-word; /* 長い単語の改行対応 */
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+}
+
+a {
+    color: #6B8EAD; /* メインカラー（くすみブルー） */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #546E7A; /* ホバー時のアクセントカラー */
+}
+
+/* ==========================================================================
+   2. タイポグラフィ（見出し・段落）
+   ========================================================================== */
+h1, h2, h3, h4 {
+    color: #333333;
+    line-height: 1.4;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+h1 {
+    font-size: 2rem; /* 32px相当 */
+    margin-bottom: 2rem;
+}
+
+h2 {
+    font-size: 1.5rem; /* 24px相当 */
+    padding-left: 12px;
+    border-left: 5px solid #6B8EAD; /* 左側のアクセント線 */
+    margin-top: 3rem;
+}
+
+h3 {
+    font-size: 1.25rem; /* 20px相当 */
+    border-bottom: 1px solid #E0E0E0;
+    padding-bottom: 8px;
+    margin-top: 2rem;
+}
+
+h4 {
+    font-size: 1.125rem; /* 18px相当 */
+    margin-top: 1.5rem;
+}
+
+p {
+    margin-bottom: 1.5rem;
+    color: #333333;
+}
+
+.text-sub {
+    color: #666666; /* 補足説明用 */
+    font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   3. 共通カードデザイン
+   ========================================================================== */
+.c-card {
+    background: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    padding: 24px;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    display: block; /* リンクとして使う場合を想定 */
+    color: inherit;
+}
+
+/* カードをリンクとして使う場合のホバー演出 */
+a.c-card:hover {
+    background-color: #F0F4F8;
+    border-color: #6B8EAD;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.c-card__title {
+    font-weight: bold;
+    font-size: 1.125rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.c-card__desc {
+    font-size: 0.95rem;
+    color: #666666;
+    margin-bottom: 0;
+}
+
+/* ==========================================================================
+   4. ボタンデザイン
+   ========================================================================== */
+.c-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 32px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    font-size: 1rem;
+    min-height: 48px; /* タップターゲットの確保 */
+    text-align: center;
+}
+
+.c-btn--primary {
+    background-color: #6B8EAD;
+    color: #FFFFFF;
+}
+
+.c-btn--primary:hover {
+    background-color: #44889b;
+    color: #ffffff;
+}
+
+.c-btn--outline {
+    background-color: transparent;
+    border: 2px solid #6B8EAD;
+    margin-top: 24px;
+    color: #6B8EAD;
+}
+
+.c-btn--outline:hover {
+    background-color: #6B8EAD;
+    color: #FFFFFF;
+}
+
+/* ==========================================================================
+   5. ユーティリティ
+   ========================================================================== */
+.u-mb-0 { margin-bottom: 0 !important; }
+.u-mt-0 { margin-top: 0 !important; }
+.u-text-center { text-align: center; }
+
+/* スマホ向けの微調整 */
+@media (max-width: 768px) {
+    h1 { font-size: 1.75rem; }
+    h2 { font-size: 1.35rem; }
+    .c-card { padding: 20px; }
+}

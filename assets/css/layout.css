@@ -1,0 +1,291 @@
+@charset "UTF-8";
+
+/* ==========================================================================
+   レイアウト・グリッド設計
+   ========================================================================== */
+
+/* 1. コンテナ（中央揃え・最大幅制限） */
+.l-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 2. ヘッダーレイアウト */
+.l-header {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #E0E0E0;
+    padding: 20px 0;
+}
+
+.l-header__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.l-header__logo a {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333333;
+}
+
+.l-header__list {
+    display: flex;
+    list-style: none;
+    gap: 24px;
+}
+
+.l-header__link {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* 3. ヒーローエリア */
+.p-hero {
+    background-color: #F8F9FA;
+    padding: 100px 0;
+    text-align: center;
+}
+
+.p-hero__title {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+    line-height: 1.3;
+}
+
+.p-hero__text {
+    font-size: 1.125rem;
+    color: #666666;
+    margin-bottom: 32px;
+}
+
+/* 4. セクション共通 */
+.l-section {
+    padding: 80px 0;
+}
+
+.u-bg-light {
+    background-color: #F8F9FA;
+}
+
+/* 5. グリッドシステム */
+.l-grid {
+    display: grid;
+    gap: 24px;
+}
+
+.l-grid--3col {
+    grid-template-columns: repeat(3, 1auto);
+}
+
+/* 6. フッターレイアウト */
+.l-footer {
+    background-color: #FFFFFF;
+    border-top: 1px solid #E0E0E0;
+    padding: 60px 0 20px;
+}
+
+.l-footer__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.l-footer__logo {
+    font-weight: bold;
+    margin-bottom: 8px;
+} 
+
+/* --- Footer Sitemap --- */
+.l-footer-sitemap {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 32px;
+    padding: 48px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.l-footer-sitemap__title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+    color: #fff;
+}
+
+.l-footer-sitemap__group ul {
+    list-style: none;
+    padding: 0;
+}
+
+.l-footer-sitemap__group li {
+    margin-bottom: 12px;
+}
+
+.l-footer-sitemap__group a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.l-footer-sitemap__group a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.l-footer__bottom {
+    padding: 32px 0;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.l-footer__logo {
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+/* 7. ユーティリティ */
+.u-mt-48 { margin-top: 48px; }
+.u-mt-48 { margin-bottom: 48px; }
+.u-sp-only { display: none; }
+
+/* ==========================================================================
+   レスポンシブ対応
+   ========================================================================== */
+@media (max-width: 900px) {
+    .l-grid--3col {
+        grid-template-columns: repeat(2, 1auto);
+    }
+}
+
+@media (max-width: 600px) {
+    .l-header__inner {
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .l-grid--3col {
+        grid-template-columns: 1auto;
+    }
+
+    .p-hero {
+        padding: 60px 0;
+    }
+
+    .p-hero__title {
+        font-size: 1.75rem;
+    }
+
+    .u-sp-only {
+        display: block;
+    }
+
+    .l-footer__inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 32px;
+    }
+}
+
+/* ==========================================================================
+   下層ページ用レイアウト
+   ========================================================================== */
+
+/* パンくずリスト */
+.l-breadcrumb {
+    background-color: #F8F9FA;
+    padding: 12px 0;
+    font-size: 0.85rem;
+}
+
+.l-breadcrumb__list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: #666666;
+}
+
+.l-breadcrumb__list li:not(:last-child)::after {
+    content: ">";
+    margin-left: 8px;
+    color: #CCCCCC;
+}
+
+.l-breadcrumb__list a {
+    color: #6B8EAD;
+}
+
+.l-breadcrumb__list a:hover {
+    text-decoration: underline;
+}
+
+/* 記事本文用の狭いコンテナ（読了率を高めるため、一行の文字数を制限） */
+.l-container--narrow {
+    max-width: 800px;
+}
+
+/* 記事ヘッダー */
+.p-article-header__intro {
+    font-size: 1.125rem;
+    color: #666666;
+    line-height: 1.8;
+    background-color: #F8F9FA;
+    padding: 24px;
+    border-radius: 8px;
+}
+
+/* 記事本文内の要素間余白調整 */
+.p-article-body h2 {
+    margin-top: 4rem; /* 大見出しの前は大きく空ける */
+}
+
+.p-article-body h3 {
+    margin-top: 2.5rem;
+}
+
+.p-article-body p + p {
+    margin-top: 1.5rem; /* 段落が続く場合の隙間 */
+}
+
+/* 2カラム用のグリッド設定 */
+.l-grid--2col {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+/* スマホでは1カラムに */
+@media (max-width: 600px) {
+    .l-grid--2col {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================================
+   追加コンポーネント：ファイルバッジ
+   ========================================================================== */
+.c-file-tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    color: #FFFFFF;
+}
+
+.c-file-tag--pdf  { background-color: #E57373; } /* 赤系：PDF */
+.c-file-tag--pptx { background-color: #FF8A65; } /* オレンジ系：PowerPoint */
+.c-file-tag--docx { background-color: #64B5F6; } /* 青系：Word */
+
+/* 小さいボタン用ユーティリティ */
+.c-btn--sm {
+    padding: 8px 16px;
+    font-size: 0.875rem;
+    min-height: 40px;
+}
+
+/* カード内にボタンを配置する際の調整 */
+.u-mt-16 { margin-top: 16px; }

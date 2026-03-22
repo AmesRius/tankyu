@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>このサイトについて | 探究学習支援サイト</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <style>
+        .p-about-hero {
+            background: linear-gradient(135deg, #45e7c7 0%, #5e8fa9 100%);
+            color: #fff;
+            padding: 64px 0 56px;
+            text-align: center;
+        }
+        .p-about-hero__title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+        .p-about-hero__sub {
+            font-size: 1rem;
+            opacity: 0.88;
+            line-height: 1.8;
+        }
+
+        .p-about-section {
+            padding: 56px 0;
+        }
+        .p-about-section + .p-about-section {
+            padding-top: 0;
+        }
+
+        .p-problem-box {
+            background: #FFF8F0;
+            border-left: 4px solid #E8834A;
+            border-radius: 0 8px 8px 0;
+            padding: 24px 28px;
+            margin: 32px 0;
+        }
+        .p-problem-box__label {
+            font-size: 0.78rem;
+            font-weight: bold;
+            letter-spacing: 0.1em;
+            color: #E8834A;
+            margin-bottom: 8px;
+        }
+        .p-problem-box p {
+            margin-bottom: 0;
+            color: #37474F;
+        }
+
+        .p-solution-box {
+            background: #F0F7FF;
+            border-left: 4px solid #5C85A4;
+            border-radius: 0 8px 8px 0;
+            padding: 24px 28px;
+            margin: 32px 0;
+        }
+        .p-solution-box__label {
+            font-size: 0.78rem;
+            font-weight: bold;
+            letter-spacing: 0.1em;
+            color: #5C85A4;
+            margin-bottom: 8px;
+        }
+        .p-solution-box p {
+            margin-bottom: 0;
+            color: #37474F;
+        }
+
+        .p-design-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 32px 0;
+        }
+        .p-design-card {
+            background: #F8F9FA;
+            border: 1px solid #E0E0E0;
+            border-radius: 10px;
+            padding: 22px 20px;
+        }
+        .p-design-card__icon {
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+        .p-design-card__title {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #37474F;
+            margin-bottom: 8px;
+        }
+        .p-design-card__body {
+            font-size: 0.88rem;
+            color: #546E7A;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .p-data-stat {
+            display: flex;
+            gap: 24px;
+            margin: 32px 0;
+            flex-wrap: wrap;
+        }
+        .p-data-stat__item {
+            background: #fff;
+            border: 1px solid #E0E0E0;
+            border-radius: 10px;
+            padding: 20px 24px;
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+        }
+        .p-data-stat__num {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #37474F;
+            line-height: 1.1;
+        }
+        .p-data-stat__label {
+            font-size: 0.78rem;
+            color: #90A4AE;
+            margin-top: 4px;
+        }
+
+        .p-cite-box {
+            background: #F8F9FA;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin: 32px 0;
+            font-size: 0.88rem;
+            color: #546E7A;
+            line-height: 1.7;
+        }
+        .p-cite-box__title {
+            font-size: 0.78rem;
+            font-weight: bold;
+            letter-spacing: 0.1em;
+            color: #90A4AE;
+            margin-bottom: 8px;
+        }
+        .p-cite-box p { margin-bottom: 0; }
+
+        .p-cta-wrap {
+            text-align: center;
+            padding: 48px 0 16px;
+        }
+        .p-cta-wrap .c-btn {
+            margin: 8px;
+        }
+
+        @media (max-width: 600px) {
+            .p-design-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="l-header">
+        <div class="l-container l-header__inner">
+            <div class="l-header__logo">
+                <a href="../">探究学習支援サイト</a>
+            </div>
+            <nav class="l-header__nav">
+                <ul class="l-header__list">
+                    <li class="l-header__item"><a href="../support/" class="l-header__link">悩み別支援</a></li>
+                    <li class="l-header__item"><a href="../guides/" class="l-header__link">学習ガイド</a></li>
+                    <li class="l-header__item"><a href="../resources/" class="l-header__link">便利ツール</a></li>
+                    <li class="l-header__item"><a href="../downloads/" class="l-header__link">配布素材</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="p-about-hero">
+        <div class="l-container">
+            <h1 class="p-about-hero__title">このサイトについて</h1>
+            <p class="p-about-hero__sub">なぜ作ったのか。何を解決しようとしているのか。</p>
+        </div>
+    </div>
+
+    <main>
+        <div class="l-section">
+            <div class="l-container l-container--narrow">
+
+                <!-- 背景：探究の最初のつまずき -->
+                <section class="p-about-section">
+                    <h2>探究のスタートでつまずく、よくある話</h2>
+                    <p>
+                        探究学習は「問いを立てる」ことから始まります。そして多くの授業では、まず自分の「好き」や「興味」から問いを考えるよう促されます。
+                    </p>
+                    <p>
+                        でも実際には、こんなことが起きがちです。
+                    </p>
+
+                    <div class="p-problem-box">
+                        <p class="p-problem-box__label">よくある課題</p>
+                        <p>
+                            好きなことからテーマを考えはじめたものの、調べているうちに「思っていたのと違う」となったり、途中で飽きてしまったりする。
+                            結局、何を探究すればよいのかわからなくなってしまう。
+                        </p>
+                    </div>
+
+                    <p>
+                        「好き」から入るアプローチ自体は間違っていません。ただ、探究のテーマとして成立するかどうかは、実際に調べてみるまでわかりにくいのです。
+                        スタート前に「このテーマは探究としてどんな方向性になるか」のイメージがあれば、途中で方向を見失うことが減るはずです。
+                    </p>
+                </section>
+
+                <!-- 解決策：サイトのコンセプト -->
+                <section class="p-about-section">
+                    <h2>このサイトが解決しようとしていること</h2>
+
+                    <div class="p-solution-box">
+                        <p class="p-solution-box__label">このサイトのコンセプト</p>
+                        <p>
+                            探究を進める前に「先輩たちはどんなテーマで取り組んできたか」を手軽に知ることで、
+                            自分のテーマの方向性やイメージをあらかじめ掴めるようにする。
+                        </p>
+                    </div>
+
+                    <p>
+                        キーワード検索やランダム表示を使って、自分の興味に近いテーマを探せます。
+                        「こういう切り口があるのか」「ここまで絞るとテーマになるのか」という感覚を、
+                        実際に探究に取り組んだ先輩たちのデータから得てもらうことを目的としています。
+                    </p>
+                </section>
+
+                <!-- 設計の判断：なぜテーマ名だけなのか -->
+                <section class="p-about-section">
+                    <h2>テーマ名だけを表示している理由</h2>
+                    <p>
+                        表示しているのはテーマ名・分野・学校・学年・年度のみで、研究の内容や結果は掲載していません。これには二つの理由があります。
+                    </p>
+
+                    <div class="p-design-grid">
+                        <div class="p-design-card">
+                            <div class="p-design-card__icon">📂</div>
+                            <div class="p-design-card__title">公開されていないデータが多い</div>
+                            <p class="p-design-card__body">
+                                SSH報告書の中には、テーマ名のみ掲載されており研究内容が公開されていないものが多数あります。一部だけ詳細を掲載すると、データの網羅性が大きく損なわれます。
+                            </p>
+                        </div>
+                        <div class="p-design-card">
+                            <div class="p-design-card__icon">👁</div>
+                            <div class="p-design-card__title">情報を絞ることで使いやすくする</div>
+                            <p class="p-design-card__body">
+                                一度に渡される情報が多すぎると、見るだけで疲れてしまいます。テーマ名という最小限の情報を広く浅く伝えることで、発想のきっかけとして機能させることを優先しました。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="p-cite-box">
+                        <p class="p-cite-box__title">詳しく調べたい場合</p>
+                        <p>
+                            各テーマには学校名・年度の情報が付いています。気になるテーマを見つけた場合は、その情報をもとに元の報告書を自力で探すことができます。SSH指定校の報告書は文部科学省や各学校のウェブサイトで公開されていることがあります。
+                        </p>
+                    </div>
+                </section>
+
+                <!-- データについて -->
+                <section class="p-about-section">
+                    <h2>収録データについて</h2>
+                    <p>
+                        掲載しているテーマは、SSH（スーパーサイエンスハイスクール）指定校が公開している活動報告書から収集したものです。報告書から一件ずつ手動で収集しており、現在は以下の規模のデータを収録しています。
+                    </p>
+
+                    <div class="p-data-stat">
+                        <div class="p-data-stat__item">
+                            <div class="p-data-stat__num" id="stat-total">—</div>
+                            <div class="p-data-stat__label">収録テーマ数</div>
+                        </div>
+                        <div class="p-data-stat__item">
+                            <div class="p-data-stat__num" id="stat-schools">—</div>
+                            <div class="p-data-stat__label">収録校数</div>
+                        </div>
+                        <div class="p-data-stat__item">
+                            <div class="p-data-stat__num" id="stat-years">—</div>
+                            <div class="p-data-stat__label">収録年度<br><span id="stat-year-range" style="font-size:.75rem;font-weight:normal">—</span></div>
+                        </div>
+                        <div class="p-data-stat__item">
+                            <div class="p-data-stat__num" id="stat-genres">—</div>
+                            <div class="p-data-stat__label">分野の種類数</div>
+                        </div>
+                    </div>
+
+                    <p>
+                        データはすべて各学校が一般に公開している報告書に基づいています。収録校・年度は今後拡充していく予定です。
+                    </p>
+                </section>
+
+                <!-- CTAリンク -->
+                <div class="p-cta-wrap">
+                    <a href="../../support/theme/examples.html" class="c-btn c-btn--primary">探究テーマを検索する</a>
+                    <a href="../support/" class="c-btn c-btn--outline">悩み別支援を見る</a>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="l-footer">
+        <div class="l-container l-footer__inner">
+            <div class="l-footer__content">
+                <p class="l-footer__logo">探究学習支援サイト</p>
+                <p class="text-sub">中高生の「知りたい」「解決したい」をサポートします。</p>
+            </div>
+            <div class="l-footer__copyright">
+                <small>&copy; 2026 探究学習支援サイト</small>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../assets/js/theme-data.js"></script>
+    <script>
+        (function() {
+            var total   = THEME_DATABASE.length;
+            var schools = new Set(THEME_DATABASE.map(function(d){ return d.school; }).filter(Boolean));
+            var years   = THEME_DATABASE.map(function(d){ return d.year; }).filter(Boolean);
+            var genres  = new Set(THEME_DATABASE.map(function(d){ return d.genre; }).filter(Boolean));
+            var minYear = years.reduce(function(a,b){ return a<b?a:b; });
+            var maxYear = years.reduce(function(a,b){ return a>b?a:b; });
+            var uniqueYears = new Set(years);
+
+            document.getElementById('stat-total').textContent   = total.toLocaleString();
+            document.getElementById('stat-schools').textContent = schools.size;
+            document.getElementById('stat-years').textContent   = uniqueYears.size;
+            document.getElementById('stat-year-range').textContent = minYear + '〜' + maxYear + '年度';
+            document.getElementById('stat-genres').textContent  = genres.size;
+        })();
+    </script>
+</body>
+</html>

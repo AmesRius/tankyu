@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>オリジナル分析 | 探究学習支援サイト</title>
+<link rel="stylesheet" href="../../assets/css/style.css">
+<link rel="stylesheet" href="../../assets/css/layout.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+body{background:#F0F2F5}
+.p-hero2{background:linear-gradient(135deg,#263238 0%,#37474F 50%,#546E7A 100%);color:#fff;padding:44px 0 36px;text-align:center}
+.p-hero2__eye{font-size:.75rem;letter-spacing:.14em;opacity:.65;margin-bottom:8px}
+.p-hero2__title{font-size:1.8rem;font-weight:bold;margin-bottom:6px}
+.p-hero2__sub{font-size:.88rem;opacity:.75;line-height:1.7}
+.p-ca-wrap{max-width:1080px;margin:28px auto 60px;padding:0 18px;display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start}
+.p-ctrl{background:#fff;border:1px solid #E0E0E0;border-radius:12px;padding:22px 18px;position:sticky;top:16px}
+.p-ctrl__section{margin-bottom:20px}
+.p-ctrl__section:last-child{margin-bottom:0}
+.p-ctrl__head{font-size:.7rem;font-weight:bold;letter-spacing:.12em;text-transform:uppercase;color:#90A4AE;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #ECEFF1}
+.p-ctrl label{display:block;font-size:.8rem;font-weight:bold;color:#546E7A;margin-bottom:5px;margin-top:12px}
+.p-ctrl label:first-of-type{margin-top:0}
+.p-ctrl select,.p-ctrl input[type=number]{width:100%;padding:8px 28px 8px 10px;border:1px solid #CFD8DC;border-radius:6px;font-size:.88rem;color:#333;background:#FAFAFA;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2390A4AE'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;transition:border-color .2s}
+.p-ctrl input[type=number]{padding-right:10px;background-image:none}
+.p-ctrl select:focus,.p-ctrl input:focus{outline:none;border-color:#6B8EAD;background:#fff}
+.p-charttype-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.p-charttype-btn{padding:8px 4px;border:1px solid #CFD8DC;border-radius:7px;background:#FAFAFA;cursor:pointer;text-align:center;transition:all .15s;font-size:.72rem;color:#78909C;font-weight:bold}
+.p-charttype-btn:hover{border-color:#90A4AE;background:#ECEFF1}
+.p-charttype-btn.is-active{border-color:#6B8EAD;background:#EBF3FA;color:#37474F}
+.p-charttype-btn .ct-icon{font-size:1.3rem;display:block;margin-bottom:2px}
+.p-filter-divider{height:1px;background:#ECEFF1;margin:20px 0}
+.p-run-btn{width:100%;padding:11px;background:linear-gradient(135deg,#546E7A,#37474F);color:#fff;border:none;border-radius:8px;font-size:.95rem;font-weight:bold;cursor:pointer;transition:opacity .2s;margin-top:4px}
+.p-run-btn:hover{opacity:.88}
+.p-reset-btn{width:100%;padding:8px;background:none;border:1px dashed #CFD8DC;border-radius:7px;font-size:.8rem;color:#90A4AE;cursor:pointer;margin-top:8px;transition:all .2s}
+.p-reset-btn:hover{border-color:#90A4AE;color:#546E7A}
+.p-result{display:flex;flex-direction:column;gap:20px}
+.p-chart-card{background:#fff;border:1px solid #E0E0E0;border-radius:12px;padding:24px}
+.p-chart-card__top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;gap:12px;flex-wrap:wrap}
+.p-chart-card__title{font-size:1.05rem;font-weight:bold;color:#263238;margin:0 0 3px}
+.p-chart-card__meta{font-size:.78rem;color:#90A4AE;margin:0}
+.p-chart-card__actions{display:flex;gap:8px}
+.p-icon-btn{padding:6px 12px;border:1px solid #E0E0E0;border-radius:6px;background:#FAFAFA;font-size:.78rem;color:#546E7A;cursor:pointer;transition:all .15s;white-space:nowrap}
+.p-icon-btn:hover{background:#ECEFF1;border-color:#90A4AE}
+.p-chart-wrap{position:relative}
+.p-heatmap-scroll{overflow-x:auto}
+.p-heatmap{border-collapse:collapse;font-size:.8rem;min-width:400px}
+.p-heatmap th{padding:6px 12px;text-align:left;font-weight:bold;color:#78909C;background:#F8F9FA;border-bottom:2px solid #ECEFF1;white-space:nowrap}
+.p-heatmap th.col-head{text-align:center}
+.p-heatmap td{padding:5px 10px;text-align:center;border:1px solid #F0F0F0;min-width:52px;font-size:.85rem;font-weight:bold;transition:opacity .15s}
+.p-heatmap td.row-head{text-align:left;font-weight:bold;color:#37474F;background:#FAFAFA;white-space:nowrap;padding-left:12px}
+.p-heatmap td:hover{opacity:.75;cursor:default}
+.p-empty{text-align:center;padding:80px 20px;color:#B0BEC5}
+.p-empty__icon{font-size:2.8rem;margin-bottom:12px}
+.p-empty__text{font-size:.95rem}
+.p-data-table-wrap{overflow-x:auto;margin-top:8px}
+.p-data-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.p-data-table th{padding:8px 12px;background:#F8F9FA;color:#78909C;font-size:.75rem;font-weight:bold;text-align:left;border-bottom:2px solid #ECEFF1;white-space:nowrap}
+.p-data-table td{padding:8px 12px;border-bottom:1px solid #F5F5F5;color:#37474F}
+.p-data-table tr:last-child td{border-bottom:none}
+.p-data-table tr:hover td{background:#FAFAFA}
+.p-summary-bar{background:#F8F9FA;border-radius:8px;padding:14px 18px;display:flex;gap:24px;flex-wrap:wrap}
+.p-summary-item{text-align:center}
+.p-summary-item__val{font-size:1.4rem;font-weight:bold;color:#37474F}
+.p-summary-item__label{font-size:.72rem;color:#90A4AE;margin-top:2px}
+.p-hint{background:#EBF3FA;border-left:3px solid #6B8EAD;border-radius:0 8px 8px 0;padding:12px 16px;font-size:.82rem;color:#546E7A;line-height:1.6}
+@media(max-width:760px){.p-ca-wrap{grid-template-columns:1fr}.p-ctrl{position:static}}
+</style>
+</head>
+<body>
+
+<header class="l-header">
+  <div class="l-container l-header__inner">
+    <div class="l-header__logo"><a href="../../">探究学習支援サイト</a></div>
+    <nav class="l-header__nav">
+      <ul class="l-header__list">
+        <li class="l-header__item"><a href="../../support/" class="l-header__link">悩み別支援</a></li>
+        <li class="l-header__item"><a href="../../guides/" class="l-header__link">学習ガイド</a></li>
+        <li class="l-header__item"><a href="../../resources/" class="l-header__link">便利ツール</a></li>
+        <li class="l-header__item"><a href="../../downloads/" class="l-header__link">配布素材</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="p-hero2">
+  <div class="l-container">
+    <p class="p-hero2__eye">SSH テーマデータベース</p>
+    <h1 class="p-hero2__title">オリジナル分析</h1>
+    <p class="p-hero2__sub">X軸・系列・グラフタイプを自由に組み合わせて、自分だけの分析を作れます。</p>
+  </div>
+</div>
+
+<div class="p-ca-wrap">
+  <aside class="p-ctrl">
+    <div class="p-ctrl__section">
+      <div class="p-ctrl__head">グラフタイプ</div>
+      <div class="p-charttype-grid">
+        <button class="p-charttype-btn is-active" data-type="bar"><span class="ct-icon">▬</span>棒グラフ</button>
+        <button class="p-charttype-btn" data-type="line"><span class="ct-icon">📈</span>折れ線</button>
+        <button class="p-charttype-btn" data-type="pie"><span class="ct-icon">◑</span>円グラフ</button>
+        <button class="p-charttype-btn" data-type="doughnut"><span class="ct-icon">◎</span>ドーナツ</button>
+        <button class="p-charttype-btn" data-type="heatmap"><span class="ct-icon">▦</span>ヒートマップ</button>
+        <button class="p-charttype-btn" data-type="table"><span class="ct-icon">≡</span>データ表</button>
+      </div>
+    </div>
+    <div class="p-ctrl__section">
+      <div class="p-ctrl__head">軸の設定</div>
+      <label>X軸（グループ）</label>
+      <select id="s-xaxis">
+        <option value="year">年度</option>
+        <option value="school">学校</option>
+        <option value="genre_cat">分野カテゴリ（集約）</option>
+        <option value="genre">分野（オリジナル）</option>
+        <option value="grade">学年</option>
+        <option value="course">授業名</option>
+      </select>
+      <label>系列（色分け） <span style="font-weight:normal;color:#B0BEC5">※棒・折れ線のみ</span></label>
+      <select id="s-series">
+        <option value="none">なし（合計のみ）</option>
+        <option value="school">学校</option>
+        <option value="genre_cat">分野カテゴリ</option>
+        <option value="year">年度</option>
+        <option value="grade">学年</option>
+        <option value="course">授業名</option>
+      </select>
+      <label>ヒートマップ行軸 <span style="font-weight:normal;color:#B0BEC5">※ヒートマップのみ</span></label>
+      <select id="s-heatrow">
+        <option value="genre_cat">分野カテゴリ</option>
+        <option value="school">学校</option>
+        <option value="grade">学年</option>
+        <option value="course">授業名</option>
+        <option value="genre">分野（オリジナル）</option>
+      </select>
+    </div>
+    <div class="p-ctrl__section">
+      <div class="p-ctrl__head">集計</div>
+      <label>集計方法</label>
+      <select id="s-agg">
+        <option value="count">件数（テーマ数）</option>
+        <option value="pct_total">全体に対する割合（%）</option>
+        <option value="pct_group">グループ内割合（%）</option>
+      </select>
+      <label>棒グラフの積み上げ</label>
+      <select id="s-stack">
+        <option value="none">なし（グループ別）</option>
+        <option value="stacked">積み上げ</option>
+        <option value="percent">100%積み上げ</option>
+      </select>
+      <label>上位N件のみ表示</label>
+      <input type="number" id="s-topn" value="0" min="0" max="50" placeholder="0＝すべて">
+      <div style="font-size:.72rem;color:#B0BEC5;margin-top:3px">0を入力するとすべて表示</div>
+    </div>
+    <div class="p-ctrl__section">
+      <div class="p-ctrl__head">フィルター</div>
+      <label>学校</label>
+      <select id="f-school"><option value="all">すべて</option></select>
+      <label>年度</label>
+      <select id="f-year"><option value="all">すべて</option></select>
+      <label>分野カテゴリ</label>
+      <select id="f-genre-cat"><option value="all">すべて</option></select>
+      <label>学年</label>
+      <select id="f-grade"><option value="all">すべて</option></select>
+      <label>授業名</label>
+      <select id="f-course"><option value="all">すべて</option></select>
+    </div>
+    <button class="p-run-btn" id="run-btn">▶ グラフを更新</button>
+    <button class="p-reset-btn" id="reset-btn">✕ すべてリセット</button>
+  </aside>
+
+  <div class="p-result">
+    <div class="p-hint" id="hint-box">
+      💡 左のパネルで「X軸」「系列」「グラフタイプ」を選んで <strong>▶ グラフを更新</strong> を押してください。
+      ヒートマップは X軸が列・行軸が行になります。
+    </div>
+    <div class="p-chart-card" id="summary-card" style="display:none">
+      <div class="p-summary-bar" id="summary-bar"></div>
+    </div>
+    <div class="p-chart-card" id="main-card" style="display:none">
+      <div class="p-chart-card__top">
+        <div>
+          <h2 class="p-chart-card__title" id="chart-title">—</h2>
+          <p class="p-chart-card__meta" id="chart-meta">—</p>
+        </div>
+        <div class="p-chart-card__actions">
+          <button class="p-icon-btn" id="btn-dl-img">📷 画像保存</button>
+          <button class="p-icon-btn" id="btn-dl-csv">⬇ CSV</button>
+        </div>
+      </div>
+      <div id="chart-container"></div>
+    </div>
+    <div class="p-chart-card" id="empty-card">
+      <div class="p-empty">
+        <div class="p-empty__icon">📊</div>
+        <div class="p-empty__text">設定を選んで「グラフを更新」を押してください</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="l-footer">
+  <div class="l-container l-footer__inner">
+    <div class="l-footer__content">
+      <p class="l-footer__logo">探究学習支援サイト</p>
+      <p class="text-sub">中高生の「知りたい」「解決したい」をサポートします。</p>
+    </div>
+    <div class="l-footer__copyright"><small>&copy; 2026 探究学習支援サイト</small></div>
+  </div>
+</footer>
+
+<script src="../../assets/js/theme-data.js"></script>
+<script>
+'use strict';
+const YEARS   = ['2018','2019','2020','2021','2022','2023','2024'];
+const SCHOOLS = ['お茶の水女子大学附属高等学校','東京都立多摩科学技術高等学校','東京都立小石川中等教育学校','東京都立戸山高等学校','東京都立科学技術高等学校','東京都立立川高等学校'];
+const SCHOOL_SHORT = {'お茶の水女子大学附属高等学校':'お茶大附属','東京都立多摩科学技術高等学校':'多摩科学技術','東京都立小石川中等教育学校':'小石川','東京都立戸山高等学校':'戸山','東京都立科学技術高等学校':'科学技術','東京都立立川高等学校':'立川'};
+const GENRE_MAP = {'物理':'物理','物理学分野':'物理','物理学系':'物理','物理系':'物理','化学':'化学','化学分野':'化学','化学系':'化学','化学・バイオ系':'化学','化学・環境':'化学','化学・薬・環境系':'化学','暮らしの化学':'化学','生物':'生物','生物学系':'生物','生物系':'生物','生物・生態学分野':'生物','生物・生態学系':'生物','BT領域':'生物','地学':'地学・環境','地学分野':'地学・環境','地学系':'地学・環境','地学・地理学':'地学・環境','地学（地理学）':'地学・環境','地学・環境・人権系':'地学・環境','地学・数学':'地学・環境','環境分野':'地学・環境','環境系':'地学・環境','地球環境科学':'地学・環境','生命科学':'地学・環境','IT領域':'情報・IT','電子・情報工学系':'情報・IT','情報':'情報・IT','情報系':'情報・IT','情報学系':'情報・IT','情報・ものつくりと課題解決':'情報・IT','NT領域':'情報・IT','ET領域':'情報・IT','機械・制御工学系':'情報・IT','数学':'数学','数学科':'数学','数学系':'数学','数学・メディア系':'数学','数学・情報系':'数学','数学・情報・メディア分野':'数学','数学・情報・メディア系':'数学','数学・情報工学・統計学系':'数学','数理・情報科学':'数学','数理・情報系':'数学','数字':'数学','教育・心理と純粋数学':'数学','社会科':'社会・人文','社会科学':'社会・人文','社会学系':'社会・人文','政治・経済・法律系':'社会・人文','政治経済学分野':'社会・人文','政治・経済・経営 × 統計':'社会・人文','政治・経済・経営×統計':'社会・人文','歴史と文化':'社会・人文','歴史学分野':'社会・人文','歴史学系':'社会・人文','人文学系':'社会・人文','地理・観光・産業・物流分野':'社会・人文','心理・コミュニケーション分野':'心理・教育','心理・コミュニケーション系':'心理・教育','教育・心理':'心理・教育','教育学分野':'心理・教育','文学':'言語・芸術','文学・言語と文化':'言語・芸術','文学・言語学系':'言語・芸術','言語・文学分野':'言語・芸術','国語科':'言語・芸術','英語科':'言語・芸術','芸術学分野':'言語・芸術','芸術系':'言語・芸術','芸術文化と科学（文学）':'言語・芸術','芸術文化と科学（色と形の科学）':'言語・芸術','芸術文化と科学（音楽学）':'言語・芸術','色と形の科学':'言語・芸術','音楽学':'言語・芸術','音楽科':'言語・芸術','美術科':'言語・芸術','スポーツ分野':'スポーツ・健康','保健体育科':'スポーツ・健康','健康・医療分野':'スポーツ・健康','身体・運動・スポーツ・栄養学系':'スポーツ・健康','身体・運動・スポーツ系':'スポーツ・健康','運動・スポーツ・身体 × データサイエンス':'スポーツ・健康','食物・栄養学分野':'スポーツ・健康'};
+const CATS    = ['情報・IT','化学','社会・人文','生物','数学','地学・環境','物理','言語・芸術','スポーツ・健康','心理・教育','その他'];
+const PALETTE = ['#5C85A4','#E8834A','#7B6EA8','#5DA06B','#D4A017','#4A9D9C','#C0575A','#A07850','#7090A0','#C06080','#9DB87A','#90A0A0'];
+
+function getCat(g){ return GENRE_MAP[g]||'その他'; }
+function getVal(d,key){ if(key==='genre_cat') return getCat(d.genre); if(key==='school') return SCHOOL_SHORT[d.school]||d.school; return d[key]||'不明'; }
+function uniq(arr){ return [...new Set(arr)].filter(Boolean).sort(); }
+function labelOf(key){ return {year:'年度',school:'学校',genre_cat:'分野カテゴリ',genre:'分野',grade:'学年',course:'授業名'}[key]||key; }
+
+function initSelects(){
+  const schoolSel=document.getElementById('f-school'), yearSel=document.getElementById('f-year');
+  const genreCatSel=document.getElementById('f-genre-cat'), gradeSel=document.getElementById('f-grade'), courseSel=document.getElementById('f-course');
+  SCHOOLS.forEach(s=>{ const o=document.createElement('option'); o.value=s; o.textContent=SCHOOL_SHORT[s]||s; schoolSel.appendChild(o); });
+  uniq(THEME_DATABASE.map(d=>d.year)).forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v+'年度'; yearSel.appendChild(o); });
+  CATS.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v; genreCatSel.appendChild(o); });
+  uniq(THEME_DATABASE.map(d=>d.grade)).forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v+'年'; gradeSel.appendChild(o); });
+  uniq(THEME_DATABASE.map(d=>d.course)).forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v; courseSel.appendChild(o); });
+}
+
+function getFiltered(){
+  const fSchool=document.getElementById('f-school').value, fYear=document.getElementById('f-year').value;
+  const fGenreCat=document.getElementById('f-genre-cat').value, fGrade=document.getElementById('f-grade').value, fCourse=document.getElementById('f-course').value;
+  return THEME_DATABASE.filter(d=>(fSchool==='all'||d.school===fSchool)&&(fYear==='all'||d.year===fYear)&&(fGenreCat==='all'||getCat(d.genre)===fGenreCat)&&(fGrade==='all'||d.grade===fGrade)&&(fCourse==='all'||d.course===fCourse));
+}
+
+function aggregate(data,xKey,seriesKey){
+  const map={};
+  data.forEach(d=>{ const x=getVal(d,xKey),s=seriesKey==='none'?'件数':getVal(d,seriesKey); if(!map[x])map[x]={}; map[x][s]=(map[x][s]||0)+1; });
+  return map;
+}
+
+let chartType='bar';
+document.querySelectorAll('.p-charttype-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.p-charttype-btn').forEach(b=>b.classList.remove('is-active'));
+    btn.classList.add('is-active'); chartType=btn.dataset.type;
+  });
+});
+
+Chart.defaults.font.family='"Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif';
+Chart.defaults.font.size=12; Chart.defaults.color='#78909C';
+let currentChart=null;
+function destroyChart(){ if(currentChart){currentChart.destroy();currentChart=null;} }
+
+function showSummary(data,xKey,seriesKey){
+  const xVals=uniq(data.map(d=>getVal(d,xKey))), sVals=seriesKey==='none'?['—']:uniq(data.map(d=>getVal(d,seriesKey)));
+  document.getElementById('summary-bar').innerHTML=
+    '<div class="p-summary-item"><div class="p-summary-item__val">'+data.length.toLocaleString()+'</div><div class="p-summary-item__label">対象テーマ数</div></div>'+
+    '<div class="p-summary-item"><div class="p-summary-item__val">'+xVals.length+'</div><div class="p-summary-item__label">'+labelOf(xKey)+'の種類数</div></div>'+
+    (seriesKey!=='none'?'<div class="p-summary-item"><div class="p-summary-item__val">'+sVals.length+'</div><div class="p-summary-item__label">'+labelOf(seriesKey)+'の系列数</div></div>':'')+
+    '<div class="p-summary-item"><div class="p-summary-item__val">'+(data.length?Math.round(data.length/xVals.length):'—')+'</div><div class="p-summary-item__label">'+labelOf(xKey)+'あたり平均</div></div>';
+  document.getElementById('summary-card').style.display='';
+}
+
+function draw(){
+  const data=getFiltered(), xKey=document.getElementById('s-xaxis').value, seriesKey=document.getElementById('s-series').value;
+  const heatRowKey=document.getElementById('s-heatrow').value, aggMode=document.getElementById('s-agg').value;
+  const stackMode=document.getElementById('s-stack').value, topN=parseInt(document.getElementById('s-topn').value)||0;
+  if(!data.length){ showCard(false); document.getElementById('empty-card').querySelector('.p-empty__text').textContent='該当データがありません。フィルターを変えてみてください。'; document.getElementById('empty-card').style.display=''; document.getElementById('summary-card').style.display='none'; return; }
+  showCard(true); showSummary(data,xKey,seriesKey); document.getElementById('hint-box').style.display='none';
+  const filterDesc=buildFilterDesc();
+  document.getElementById('chart-title').textContent=labelOf(xKey)+'別 テーマ数'+(seriesKey!=='none'?' × '+labelOf(seriesKey):'');
+  document.getElementById('chart-meta').textContent='集計：'+aggMode+'　'+(filterDesc||'フィルターなし');
+  if(chartType==='heatmap') drawHeatmap(data,xKey,heatRowKey,aggMode,topN);
+  else if(chartType==='table') drawTable(data,xKey,seriesKey,aggMode,topN);
+  else drawChart(data,xKey,seriesKey,aggMode,stackMode,topN);
+}
+
+function showCard(show){ document.getElementById('main-card').style.display=show?'':'none'; document.getElementById('empty-card').style.display=show?'none':''; }
+
+function buildFilterDesc(){
+  const parts=[], fs=[['f-school','学校'],['f-year','年度'],['f-genre-cat','分野カテゴリ'],['f-grade','学年'],['f-course','授業名']];
+  fs.forEach(([id,label])=>{ const v=document.getElementById(id).value; if(v!=='all') parts.push(label+':'+v); });
+  return parts.join('　');
+}
+
+function drawChart(data,xKey,seriesKey,aggMode,stackMode,topN){
+  destroyChart();
+  document.getElementById('chart-container').innerHTML='<div class="p-chart-wrap" style="height:340px"><canvas id="main-canvas"></canvas></div>';
+  const map=aggregate(data,xKey,seriesKey), total=data.length;
+  const isStacked=stackMode==='stacked'||stackMode==='percent', isPercent=stackMode==='percent';
+  let xLabels=Object.keys(map).sort((a,b)=>Object.values(map[b]||{}).reduce((x,y)=>x+y,0)-Object.values(map[a]||{}).reduce((x,y)=>x+y,0));
+  if(topN>0) xLabels=xLabels.slice(0,topN);
+  const allSeries=uniq(data.map(d=>seriesKey==='none'?'件数':getVal(d,seriesKey)));
+  const isPie=chartType==='pie'||chartType==='doughnut';
+  let chartData;
+  if(isPie){
+    const counts=xLabels.map(x=>Object.values(map[x]||{}).reduce((a,b)=>a+b,0));
+    chartData={labels:xLabels,datasets:[{data:counts,backgroundColor:xLabels.map((_,i)=>PALETTE[i%PALETTE.length]+'CC'),borderColor:xLabels.map((_,i)=>PALETTE[i%PALETTE.length]),borderWidth:2}]};
+  } else {
+    const datasets=allSeries.map((s,i)=>({
+      label:s,
+      data:xLabels.map(x=>{ const raw=(map[x]||{})[s]||0; if(isPercent){const g=Object.values(map[x]||{}).reduce((a,b)=>a+b,0)||1;return Math.round(raw/g*1000)/10;} if(aggMode==='pct_total') return Math.round(raw/total*1000)/10; if(aggMode==='pct_group'){const g=Object.values(map[x]||{}).reduce((a,b)=>a+b,0)||1;return Math.round(raw/g*1000)/10;} return raw; }),
+      backgroundColor:PALETTE[i%PALETTE.length]+'BB', borderColor:PALETTE[i%PALETTE.length], borderWidth:chartType==='line'?2:1, borderRadius:chartType==='bar'?4:0, fill:chartType==='line'?false:undefined, tension:chartType==='line'?0.35:undefined, pointRadius:chartType==='line'?4:undefined
+    }));
+    chartData={labels:xLabels,datasets};
+  }
+  const ctx=document.getElementById('main-canvas').getContext('2d');
+  currentChart=new Chart(ctx,{
+    type:isPie?chartType:(chartType==='line'?'line':'bar'),
+    data:chartData,
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:isPie||(seriesKey!=='none'),position:'bottom',labels:{font:{size:11},padding:10,boxWidth:12,usePointStyle:isPie}},tooltip:{callbacks:{label(ctx){const v=ctx.parsed.y??ctx.parsed;return ' '+ctx.dataset.label+': '+(typeof v==='number'?v+(aggMode!=='count'?'%':'件'):'');}}}},
+      scales:isPie?{}:{x:{stacked:isStacked,grid:{display:false},ticks:{maxRotation:45,font:{size:11}}},y:{stacked:isStacked,beginAtZero:true,max:isPercent?100:undefined,ticks:{callback:v=>v+(aggMode!=='count'?'%':'')},grid:{color:'rgba(0,0,0,0.05)'}}}}
+  });
+}
+
+function drawHeatmap(data,colKey,rowKey,aggMode,topN){
+  destroyChart();
+  const map={};
+  data.forEach(d=>{ const c=getVal(d,colKey),r=getVal(d,rowKey); if(!map[r])map[r]={}; map[r][c]=(map[r][c]||0)+1; });
+  let cols=uniq(data.map(d=>getVal(d,colKey))), rows=uniq(data.map(d=>getVal(d,rowKey)));
+  if(topN>0) rows=rows.sort((a,b)=>Object.values(map[b]||{}).reduce((x,y)=>x+y,0)-Object.values(map[a]||{}).reduce((x,y)=>x+y,0)).slice(0,topN);
+  const allVals=rows.flatMap(r=>cols.map(c=>(map[r]||{})[c]||0)), maxVal=Math.max(...allVals,1);
+  const colTotals={}, rowTotals={};
+  cols.forEach(c=>{ colTotals[c]=rows.reduce((s,r)=>s+((map[r]||{})[c]||0),0); });
+  rows.forEach(r=>{ rowTotals[r]=cols.reduce((s,c)=>s+((map[r]||{})[c]||0),0); });
+  function heatColor(v,max){ if(!v)return '#F8F9FA'; const t=v/max; const r2=Math.round(93+(t*(192-93))),g2=Math.round(169+(t*(73-169))),b2=Math.round(194+(t*(74-194))); return `rgb(${r2},${g2},${b2})`; }
+  function textColor(v,max){ return (v/max)>0.45?'#fff':'#37474F'; }
+  let html='<div class="p-heatmap-scroll"><table class="p-heatmap"><thead><tr><th>'+labelOf(rowKey)+' \\ '+labelOf(colKey)+'</th>';
+  cols.forEach(c=>{ html+='<th class="col-head">'+c+'</th>'; });
+  html+='<th class="col-head" style="color:#5C85A4">合計</th></tr></thead><tbody>';
+  rows.forEach(r=>{
+    html+='<tr><td class="row-head">'+r+'</td>';
+    cols.forEach(c=>{ const v=(map[r]||{})[c]||0; const bg=heatColor(v,maxVal),tc=textColor(v,maxVal); const disp=aggMode==='count'?v:(aggMode==='pct_total'?Math.round(v/data.length*1000)/10+'%':Math.round(v/(rowTotals[r]||1)*1000)/10+'%'); html+='<td style="background:'+bg+';color:'+tc+'">'+disp+'</td>'; });
+    html+='<td style="background:#EBF3FA;color:#37474F;font-weight:bold">'+rowTotals[r]+'</td></tr>';
+  });
+  html+='<tr><td class="row-head" style="color:#5C85A4;font-weight:bold">合計</td>';
+  cols.forEach(c=>{ html+='<td style="background:#EBF3FA;color:#37474F;font-weight:bold">'+colTotals[c]+'</td>'; });
+  html+='<td style="background:#D6E8F5;color:#263238;font-weight:bold">'+data.length+'</td></tr></tbody></table></div>';
+  document.getElementById('chart-container').innerHTML=html;
+}
+
+function drawTable(data,xKey,seriesKey,aggMode,topN){
+  destroyChart();
+  const map=aggregate(data,xKey,seriesKey);
+  let xLabels=Object.keys(map).sort((a,b)=>Object.values(map[b]).reduce((x,y)=>x+y,0)-Object.values(map[a]).reduce((x,y)=>x+y,0));
+  if(topN>0) xLabels=xLabels.slice(0,topN);
+  const allSeries=seriesKey==='none'?['件数']:uniq(data.map(d=>getVal(d,seriesKey)));
+  let html='<div class="p-data-table-wrap"><table class="p-data-table"><thead><tr><th>'+labelOf(xKey)+'</th>';
+  allSeries.forEach(s=>{ html+='<th>'+s+'</th>'; });
+  html+='<th>合計</th></tr></thead><tbody>';
+  xLabels.forEach(x=>{
+    const rowTotal=Object.values(map[x]).reduce((a,b)=>a+b,0), pct=Math.round(rowTotal/data.length*100);
+    html+='<tr><td><strong>'+x+'</strong></td>';
+    allSeries.forEach(s=>{ const v=(map[x]||{})[s]||0; const disp=aggMode==='count'?v:(aggMode==='pct_total'?Math.round(v/data.length*1000)/10+'%':Math.round(v/(rowTotal||1)*1000)/10+'%'); html+='<td>'+disp+'</td>'; });
+    html+='<td><strong>'+rowTotal+'</strong> <span style="color:#B0BEC5;font-size:.75rem">('+pct+'%)</span></td></tr>';
+  });
+  html+='</tbody></table></div>';
+  document.getElementById('chart-container').innerHTML=html;
+}
+
+function exportCSV(){
+  const data=getFiltered(), xKey=document.getElementById('s-xaxis').value, seriesKey=document.getElementById('s-series').value;
+  const map=aggregate(data,xKey,seriesKey), allSeries=seriesKey==='none'?['件数']:uniq(data.map(d=>getVal(d,seriesKey)));
+  let csv=labelOf(xKey)+','+allSeries.join(',')+',合計\n';
+  Object.keys(map).forEach(x=>{ const total=Object.values(map[x]).reduce((a,b)=>a+b,0); csv+='"'+x+'",'+allSeries.map(s=>(map[x][s]||0)).join(',')+','+total+'\n'; });
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'})); a.download='ssh-themes-'+Date.now()+'.csv'; a.click();
+}
+
+function exportImage(){
+  const canvas=document.getElementById('main-canvas');
+  if(!canvas){alert('グラフが表示されていません（ヒートマップ・データ表は非対応）');return;}
+  const a=document.createElement('a'); a.href=canvas.toDataURL('image/png'); a.download='ssh-chart-'+Date.now()+'.png'; a.click();
+}
+
+function resetAll(){
+  ['f-school','f-year','f-genre-cat','f-grade','f-course','s-xaxis','s-series','s-heatrow','s-agg','s-stack'].forEach(id=>{ const el=document.getElementById(id); if(el) el.selectedIndex=0; });
+  document.getElementById('s-topn').value=0;
+  document.querySelectorAll('.p-charttype-btn').forEach(b=>b.classList.remove('is-active'));
+  document.querySelector('.p-charttype-btn[data-type="bar"]').classList.add('is-active');
+  chartType='bar'; destroyChart();
+  document.getElementById('main-card').style.display='none';
+  document.getElementById('summary-card').style.display='none';
+  document.getElementById('empty-card').style.display='';
+  document.getElementById('hint-box').style.display='';
+}
+
+document.getElementById('run-btn').addEventListener('click',draw);
+document.getElementById('reset-btn').addEventListener('click',resetAll);
+document.getElementById('btn-dl-csv').addEventListener('click',exportCSV);
+document.getElementById('btn-dl-img').addEventListener('click',exportImage);
+document.addEventListener('keydown',e=>{ if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)) draw(); });
+
+initSelects();
+</script>
+</body>
+</html>

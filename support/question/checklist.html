@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>問いのチェックリスト | 探究学習支援サイト</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/layout.css">
+    <style>
+        /* チェックリスト用の簡易スタイル */
+        .p-checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .p-checklist__item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            border-bottom: 1px solid #E0E0E0;
+        }
+        .p-checklist__item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="l-header">
+        <div class="l-container l-header__inner">
+            <div class="l-header__logo">
+                <a href="../../">探究学習支援サイト</a>
+            </div>
+            <nav class="l-header__nav">
+                <ul class="l-header__list">
+                    <li><a href="../../about/" class="l-header__link">このサイトについて</a></li>
+                    <li><a href="../../support/" class="l-header__link">悩み別支援</a></li>
+                    <li><a href="../../guides/" class="l-header__link">学習ガイド</a></li>
+                    <li><a href="../../tools/" class="l-header__link">便利ツール</a></li>
+                    <li><a href="../../downloads/" class="l-header__link">配布素材</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="l-breadcrumb">
+        <div class="l-container">
+            <ol class="l-breadcrumb__list">
+                <li><a href="../../">ホーム</a></li>
+                <li><a href="../../support/">悩み別支援</a></li>
+                <li><a href="../../support/question/">問いづくり</a></li>
+                <li>「いい問い」の条件</li>
+            </ol>
+        </div>
+    </nav>
+
+
+    <main>
+        <article class="l-section">
+            <div class="l-container l-container--narrow">
+                
+                <header class="p-article-header u-mb-48">
+                    <h1 class="u-mb-24">問いのチェックリスト</h1>
+                    <p class="p-article-header__intro">
+                        問いができたら、最後にこのリストで確認してみましょう。
+                        すべてにチェックがつかなくても大丈夫。修正するためのヒントにしてください。
+                    </p>
+                </header>
+
+                <div class="p-article-body">
+                    <ul class="p-checklist">
+                        <li class="p-checklist__item">
+                            <input type="checkbox" id="check1">
+                            <label for="check1"><strong>答えが「Yes/No」だけで終わらないものになっているか？</strong><br>
+                            <span class="text-sub">（例：「〇〇は必要か？」ではなく「〇〇にはどのようなメリットと課題があるか？」）</span></label>
+                        </li>
+                        <li class="p-checklist__item">
+                            <input type="checkbox" id="check2">
+                            <label for="check2"><strong>「何を調査すればいいか」が具体的にイメージできるか？</strong><br>
+                            <span class="text-sub">（誰にアンケートするのか、どこを観察するのかが決まっているか）</span></label>
+                        </li>
+                        <li class="p-checklist__item">
+                            <input type="checkbox" id="check3">
+                            <label for="check3"><strong>1人で、または今のチームで期間内に調べられそうな内容か？</strong><br>
+                            <span class="text-sub">（無理のない範囲に絞り込めているか）</span></label>
+                        </li>
+                        <li class="p-checklist__item">
+                            <input type="checkbox" id="check4">
+                            <label for="check4"><strong>その問いの答えを知りたいと思う「自分なりの理由」があるか？</strong><br>
+                            <span class="text-sub">（義務感ではなく、自分の好奇心が乗っているか）</span></label>
+                        </li>
+                        <li class="p-checklist__item">
+                            <input type="checkbox" id="check5">
+                            <label for="check5"><strong>事実（データ）に基づいて論理的に説明できそうな問いか？</strong><br>
+                            <span class="text-sub">（単なる感想文にならない工夫ができているか）</span></label>
+                        </li>
+                        <li class="p-checklist__item">
+                            <input type="checkbox" id="check6">
+                            <label for="check6"><strong>『チャレンジ』導き出される結果は一般的な意見と異なるか？</strong><br>
+                            <span class="text-sub">（一般論にならない独自性のある結果を出せそうか）</span></label>
+                        </li>
+                        <li class="p-checklist__item">
+                            <input type="checkbox" id="check7">
+                            <label for="check7"><strong>『チャレンジ』社会に還元するイメージが出来ているか？</strong><br>
+                            <span class="text-sub">（自分の好奇心と共に社会的な意義や社会との繋がりを考えられるか？）</span></label>
+                        </li>
+                    </ul>
+                </div>
+
+                <footer class="p-article-footer u-mt-64 u-text-center">
+                    <a href="../../support/question/" class="c-btn c-btn--outline">
+                        「問いづくり」の一覧に戻る
+                    </a>
+                </footer>
+
+            </div>
+        </article>
+    </main>
+
+    <footer class="l-footer">
+        <div class="l-container u-text-center">
+            <small>&copy; 2026 探究学習支援サイト</small>
+        </div>
+    </footer>
+
+    </body>
+</html>
